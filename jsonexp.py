@@ -2,6 +2,10 @@ from tml.tml import *
 from tml.items import *
 import json
 import sys
+import re
+
+def normalizeFilename(name):
+  return re.sub('[^abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_]', '_', name)
 
 def build_json(path):
 	t = Teemap(path);
@@ -24,10 +28,13 @@ def build_json(path):
 				# size
 				l['size'][0] = curLayer._width
 				l['size'][1] = curLayer._height
+				if curLayer.name == 'Freeze1':
+					print curLayer._width
+					print curLayer._height
 
 				# texture png
 				if curLayer.image_id != -1:
-					l['tex'] = t.images[curLayer.image_id].name + ".png"	
+					l['tex'] = normalizeFilename(t.images[curLayer.image_id].name) + ".png"	
 
 				for curTile in curLayer.tiles:
 					l['tiles'] += [curTile.index]
@@ -36,7 +43,7 @@ def build_json(path):
 				l = { 'type': "quadlayer", 'tex': "", 'quads': []}
 
 				if curLayer.image_id != -1:
-					l['tex'] = t.images[curLayer.image_id].name + ".png"	
+					l['tex'] = normalizeFilename(t.images[curLayer.image_id].name) + ".png"	
 				
 				for q in curLayer.quads:
 					l['quads'] += [{
@@ -65,7 +72,7 @@ if len(sys.argv) < 2:
 
 for curMap in sys.argv[1:]:
 	f = open(curMap+".json", "w")
-	f.write(build_json(curMap));
+	f.write(build_json(curMap).decode('utf-8'));
 	f.close();
 	print(curMap+".json")
 	
