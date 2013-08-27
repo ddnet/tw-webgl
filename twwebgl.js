@@ -246,6 +246,7 @@ tw.Map = function(data) {
 	this.groups = [];
 
 	var grp;
+	var first = true;
 
 	for (var g = 0; g < data.groups.length; g++)
 	{
@@ -261,8 +262,25 @@ tw.Map = function(data) {
 		
 			if (dLayer.type == "tilelayer")
 			{
-				if (dLayer.tex == "")
+				if (dLayer.tex == "") {
+					if (first) {
+						for (var y = 0; y < dLayer.size[1] && first; y++) {
+							for (var x = 0; x < dLayer.size[0]; x++) {
+								var t = dLayer.tiles[y * dLayer.size[0] + x];
+								if (t == 192) {
+									tw.cameraPos[0] = x * 32;
+									tw.cameraPos[1] = y * 32;
+									first = false;
+									break;
+								}
+							}
+						}
+
+						first = true;
+					}
+
 					continue;
+				}
 
 				grp.addTileLayer(dLayer.size[0], dLayer.size[1], dLayer, dLayer.tex, dLayer.color);
 			}
@@ -463,9 +481,6 @@ tw.Map.Group.prototype.addTileLayer = function(width, height, tiles, texture, co
 	var newLayer = new tw.TileLayer(width, height, tw.buildTiles(tiles), color, this);
 	newLayer.glTex = glTex;
 	this.layers.push(newLayer);
-	//var newLayer = new tw.TileLayer(width, height, tw.buildTiles(tiles), color, this);
-	//newLayer.glTex = glTex;
-	//this.layers.push(newLayer);
 }
 
 tw.Map.Group.prototype.tick = function() {
@@ -501,6 +516,7 @@ tw.Map.Group.prototype.render = function() {
 
 	this.initMapScreen();
 	tw.initPrjMat();
+
 		
 	for (var i = 0; i < this.layers.length; i++)
 	{

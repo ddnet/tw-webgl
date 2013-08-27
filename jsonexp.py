@@ -28,9 +28,6 @@ def build_json(path):
 				# size
 				l['size'][0] = curLayer._width
 				l['size'][1] = curLayer._height
-				if curLayer.name == 'Freeze1':
-					print curLayer._width
-					print curLayer._height
 
 				# texture png
 				if curLayer.image_id != -1:
