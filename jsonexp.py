@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from tml.tml import *
 from tml.items import *
 import json
