@@ -6,7 +6,8 @@ import sys
 import re
 
 def normalizeFilename(name):
-  return re.sub('[^abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_]', '_', name)
+  #return re.sub('[^abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_]', '_', name)
+  return re.sub('\W', '_', name)
 
 def build_json(path):
 	t = Teemap(path);
