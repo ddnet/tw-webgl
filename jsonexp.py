@@ -4,6 +4,7 @@ from tml.items import *
 import json
 import sys
 import re
+from os.path import basename, splitext
 
 def normalizeFilename(name):
   #return re.sub('[^abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_]', '_', name)
@@ -11,6 +12,7 @@ def normalizeFilename(name):
 
 def build_json(path):
 	t = Teemap(path);
+	mapname = splitext(basename(path))[0]
 	groups = []
 
 	for curGroup in t.groups:
@@ -33,7 +35,7 @@ def build_json(path):
 
 				# texture png
 				if curLayer.image_id != -1:
-					l['tex'] = normalizeFilename(t.images[curLayer.image_id].name) + ".png"	
+					l['tex'] = os.sep.join([normalizeFilename(mapname), normalizeFilename(t.images[curLayer.image_id].name) + '.png'])
 
 				for curTile in curLayer.tiles:
 					l['tiles'] += [curTile.index]
@@ -42,7 +44,7 @@ def build_json(path):
 				l = { 'type': "quadlayer", 'tex': "", 'quads': []}
 
 				if curLayer.image_id != -1:
-					l['tex'] = normalizeFilename(t.images[curLayer.image_id].name) + ".png"	
+					l['tex'] = os.sep.join([normalizeFilename(mapname), normalizeFilename(t.images[curLayer.image_id].name) + '.png'])
 				
 				for q in curLayer.quads:
 					l['quads'] += [{
