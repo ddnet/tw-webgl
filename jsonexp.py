@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 from tml.tml import *
 from tml.items import *
 import json
