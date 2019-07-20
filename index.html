@@ -24,6 +24,7 @@
     <script src='dataviewext.js'></script>
     <script src='twdatafile.js'></script>
     <script src='twwebgl.js'></script>
+    <input type='file' id='fileSelect' style="visibility: hidden;"></input><br>
     <canvas id='cnvs'></canvas>
 
     <script>
@@ -34,6 +35,7 @@
           if (params.map) {
             tw.init({ mapUrl: params.map })
           } else {
+            $("#fileSelect").css('visibility', 'visible');
             $("#fileSelect").on('change', function(evt) {
               var file = evt.target.files[0];
 
