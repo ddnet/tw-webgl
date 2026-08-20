@@ -140,9 +140,13 @@ tw.init = function(attrs) {
         tw.mouseLastPos[1] = e.clientY;
     });
 
-    $("#cnvs").mousewheel(function(event, delta, deltaX, deltaY) {
-        // Change camera zoom on mosewheel
-        tw.cameraZoom += deltaY * (tw.cameraZoom / 10);
+    $("#cnvs").on("wheel", function(event) {
+        // Change camera zoom on mousewheel, exponentially and clamped, so that
+        // it depends on how far you scrolled, not on how fast the browser fires
+        // and accelerates its wheel events
+        var e = event.originalEvent;
+        var deltaY = e.deltaMode ? e.deltaY * 16 : e.deltaY; // lines to pixels
+        tw.cameraZoom *= Math.exp(-Math.max(-100, Math.min(100, deltaY)) * 0.001);
         tw.zoomed = true;
     });
 
